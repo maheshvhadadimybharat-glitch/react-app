@@ -1,0 +1,75 @@
+.tabs {
+  display: flex;
+  gap: 16px;
+}
+
+/* ===================== */
+/* indicator */
+/* ===================== */
+
+.indicator {
+  position: absolute;
+  background: var(--color-primary);
+}
+
+/* ===================== */
+/* Horizontal */
+/* ===================== */
+
+.horizontal {
+  flex-direction: column;
+}
+
+.horizontal .tabList {
+  position: relative;
+  display: flex;
+  border-bottom: 1px solid #eee;
+}
+
+.horizontal .indicator {
+  bottom: 0;
+  height: 3px;
+  transition: transform 0.3s ease, width 0.3s ease;
+}
+
+/* ===================== */
+/* Vertical */
+/* ===================== */
+
+.vertical {
+  flex-direction: row;
+}
+
+.vertical .tabList {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #eee;
+}
+
+.vertical .indicator {
+  right: 0;
+  width: 3px;
+  transition: transform 0.3s ease, height 0.3s ease;
+}
+
+/* Shared */
+
+.tabButton {
+  position: relative;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.tabButton:focus {
+  outline: none;
+}
+
+.active {
+  font-weight: 600;
+}

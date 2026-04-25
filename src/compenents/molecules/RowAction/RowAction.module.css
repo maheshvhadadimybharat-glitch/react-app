@@ -1,0 +1,7 @@
+.rowActions {
+    text-align: center;
+}
+
+.rowActions button:not(:last-child) {
+    margin-right: 12px;
+}

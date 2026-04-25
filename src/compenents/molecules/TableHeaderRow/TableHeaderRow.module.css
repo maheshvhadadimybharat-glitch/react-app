@@ -1,0 +1,12 @@
+th {
+    background-color: var(--color-blue);
+    color: white;
+}
+
+th:first-child {
+    border-start-start-radius: 8px;
+}
+
+th:last-child {
+    border-start-end-radius: 8px;
+}

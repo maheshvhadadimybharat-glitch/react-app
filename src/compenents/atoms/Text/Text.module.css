@@ -1,0 +1,45 @@
+.text {
+  font-family: var(--font-family-base);
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading);
+}
+
+.h1 { font-size: var(--font-size-h1); }
+.h2 { font-size: var(--font-size-h2); }
+.h3 { font-size: var(--font-size-h3); }
+.h4 { font-size: var(--font-size-h4); }
+.h5 { font-size: var(--font-size-h5); }
+.h6 { font-size: var(--font-size-h6); }
+
+.base {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+}
+
+.title1,
+.title2,
+.title3 {
+  font-weight: var(--font-weight-medium);
+}
+
+.title1 { font-size: var(--font-size-title1); }
+.title2 { font-size: var(--font-size-title2); }
+.title3 { font-size: var(--font-size-title3); }
+
+.title1,
+.title2,
+.title3 {
+  font-weight: var(--font-weight-medium);
+}
+
+.title1 { font-size: var(--font-size-title1); }
+.title2 { font-size: var(--font-size-title2); }
+.title3 { font-size: var(--font-size-title3); }

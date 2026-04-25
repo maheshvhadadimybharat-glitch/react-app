@@ -1,0 +1,11 @@
+{
+  "mcpServers": [
+    {
+      "id": "button-atom-mcp",
+      "name": "Button Atom MCP (local)",
+      "manifestFile": "mcp/button-atom-mcp/button.json",
+      "manifestUrl": "http://localhost:4300/atoms/button",
+      "description": "Local MCP for the Button atom. Use the file path for offline discovery or the URL when the server is running."
+    }
+  ]
+}

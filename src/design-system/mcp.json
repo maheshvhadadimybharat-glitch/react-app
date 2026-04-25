@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "name": "Design System 2.0 Web Kit (Community)",
+    "lastModified": "2026-01-05T03:04:09Z"
+  },
+  "tokens": {
+    "color": {
+      "primary": {
+        "default": "#BC4717",
+        "50": "#FCEEE8",
+        "100": "#F9DDD2",
+        "200": "#F4BBA4",
+        "300": "#EE9977",
+        "400": "#E87749",
+        "500": "#BC4717",
+        "600": "#9A3A13",
+        "700": "#742C0E"
+      },
+      "neutral": {
+        "0": "#FFFFFF",
+        "100": "#F5F5F5",
+        "200": "#E5E5E5",
+        "900": "#111111"
+      }
+    },
+    "spacing": {
+      "4": "4px",
+      "8": "8px",
+      "12": "12px",
+      "16": "16px",
+      "24": "24px",
+      "32": "32px"
+    },
+    "radius": {
+      "sm": "4px",
+      "md": "8px",
+      "lg": "12px",
+      "full": "999px"
+    },
+    "typography": {
+      "fontSize": {
+        "sm": "12px",
+        "md": "14px",
+        "lg": "16px"
+      },
+      "fontWeight": {
+        "regular": "400",
+        "medium": "500",
+        "bold": "600"
+      }
+    }
+  },
+
+  "semantic": {
+    "color": {
+      "bg": {
+        "primary": "{color.primary.500}",
+        "secondary": "{color.neutral.0}"
+      },
+      "text": {
+        "primary": "{color.neutral.900}",
+        "inverse": "{color.neutral.0}"
+      },
+      "border": {
+        "default": "{color.neutral.200}",
+        "active": "{color.primary.500}"
+      }
+    }
+  },
+
+  "components": {
+    "button": {
+      "base": {
+        "borderRadius": "{radius.md}",
+        "fontWeight": "{typography.fontWeight.bold}",
+        "display": "flex",
+        "alignItems": "center",
+        "justifyContent": "center",
+        "gap": "{spacing.8}"
+      },
+
+      "variants": {
+        "primary": {
+          "backgroundColor": "{semantic.color.bg.primary}",
+          "color": "{semantic.color.text.inverse}"
+        },
+        "secondary": {
+          "backgroundColor": "{semantic.color.bg.secondary}",
+          "color": "{semantic.color.text.primary}",
+          "border": "1px solid {semantic.color.border.default}"
+        },
+        "outline": {
+          "backgroundColor": "transparent",
+          "color": "{semantic.color.text.primary}",
+          "border": "1px solid {semantic.color.border.active}"
+        }
+      },
+
+      "sizes": {
+        "sm": {
+          "padding": "{spacing.4} {spacing.8}",
+          "fontSize": "{typography.fontSize.sm}"
+        },
+        "md": {
+          "padding": "{spacing.8} {spacing.16}",
+          "fontSize": "{typography.fontSize.md}"
+        },
+        "lg": {
+          "padding": "{spacing.12} {spacing.24}",
+          "fontSize": "{typography.fontSize.lg}"
+        }
+      },
+
+      "states": {
+        "hover": {
+          "primary": {
+            "backgroundColor": "{color.primary.600}"
+          }
+        },
+        "disabled": {
+          "opacity": "0.4",
+          "cursor": "not-allowed"
+        }
+      }
+    },
+    "input": {
+      "base": {
+        "display": "flex",
+        "alignItems": "center",
+        "borderRadius": "{radius.md}",
+        "border": "1px solid {semantic.color.border.default}",
+        "backgroundColor": "{semantic.color.bg.secondary}",
+        "color": "{semantic.color.text.primary}"
+      },
+
+      "sizes": {
+        "sm": {
+          "padding": "{spacing.4} {spacing.8}",
+          "fontSize": "{typography.fontSize.sm}"
+        },
+        "md": {
+          "padding": "{spacing.8} {spacing.12}",
+          "fontSize": "{typography.fontSize.md}"
+        },
+        "lg": {
+          "padding": "{spacing.12} {spacing.16}",
+          "fontSize": "{typography.fontSize.lg}"
+        }
+      },
+
+      "variants": {
+        "default": {},
+        "outline": {
+          "border": "1px solid {semantic.color.border.active}"
+        },
+        "filled": {
+          "backgroundColor": "{color.neutral.100}"
+        }
+      },
+
+      "states": {
+        "focus": {
+          "border": "1px solid {semantic.color.border.active}"
+        },
+        "disabled": {
+          "opacity": "0.5",
+          "cursor": "not-allowed"
+        }
+      }
+    }
+  }
+}

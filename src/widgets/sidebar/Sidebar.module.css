@@ -1,0 +1,56 @@
+ul.items,
+ul.items ul {
+    margin: 0;
+    padding: 0;
+    padding-inline: 0;
+    list-style: none;
+}
+.item {
+    background-color: rgb(226, 224, 221);
+    list-style: none;
+    marker: none;
+
+}
+.active {
+    color: orange;
+    background-color: #eee;
+  font-weight: bold;
+}
+
+.item {
+  list-style: none;
+}
+
+.itemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Arrow rotation */
+.arrow {
+  transition: transform 0.2s ease;
+}
+
+.arrow.open {
+  transform: rotate(90deg);
+}
+
+/* Submenu animation */
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.submenu.open {
+  max-height: 500px; /* enough for content */
+}

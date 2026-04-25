@@ -1,0 +1,12 @@
+{
+  "id": "button",
+  "name": "Button",
+  "description": "Atom Button component (label, variant, onClick)",
+  "props": {
+    "label": { "type": "string", "default": "Click me" },
+    "variant": { "type": "string", "enum": ["primary", "secondary"], "default": "primary" },
+    "onClick": { "type": "function", "description": "Click handler" }
+  },
+  "example": "<Button label=\"Add\" variant=\"primary\"/>",
+  "source": "/atoms/button/code"
+}
