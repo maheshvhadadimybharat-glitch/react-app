@@ -11,6 +11,7 @@ import DeleteModal from "../../compenents/Modals/DeleteModal";
 import { useAuth } from "../../compenents/GlobalContext/AuthContext";
 import { Link } from "react-router-dom";
 import Button from "../../compenents/Button";
+import MaterialButton from "../../compenents/MaterialButton/MaterialButton";
 import toast from 'react-hot-toast';
 
 const UserPage = () => {
@@ -149,7 +150,7 @@ const UserPage = () => {
         
       <div className="max-w-xl mx-auto">
       {user && (
-        <Button label="Logout" variant="secondary" onClick={signOut} />
+        <MaterialButton label="Logout" variant="contained" color="primary" onClick={signOut} />
       )}
 
        {/* <ThemeToggle/> Add the button here! */}
@@ -172,11 +173,7 @@ const UserPage = () => {
         <span className="text-4xl text-gray-300">🔍</span>
         <p className={listStyles.emptyText}>No matches found for "{searchTerm}"</p>
         <p className={listStyles.emptySubtext}>Try checking your spelling or using a different name.</p>
-        <Button
-          label="Clear Search"
-          variant="secondary"
-          onClick={() => setSearchTerm("")}
-        />
+        <MaterialButton label="Clear Search" variant="outlined" color="primary" onClick={() => setSearchTerm("")} />
       </div>
       ) : (
         <div>
