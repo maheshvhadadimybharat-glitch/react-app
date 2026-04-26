@@ -15,5 +15,14 @@
       "manifestUrl": "http://localhost:4301/atoms/material-button",
       "description": "Local MCP for the MaterialButton atom. Use the file path for offline discovery or the URL when the server is running."
     }
+    ,
+    {
+      "id": "google-design-mcp",
+      "name": "Google Design MCP (design.googleapis.com)",
+      "manifestUrl": "https://design.googleapis.com/mcp",
+      "serverType": "json-rpc",
+      "auth": "required",
+      "description": "Public Google Design MCP endpoint. Requires enabling MCP servers and authentication (see https://developers.google.com/design-mcp). Use the tools/list JSON-RPC method to enumerate available tools."
+    }
   ]
 }
