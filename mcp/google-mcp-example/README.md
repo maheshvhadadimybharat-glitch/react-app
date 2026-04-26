@@ -6,20 +6,48 @@ method.
 
 Usage
 
-1. Install (no deps required): Node.js 18+ recommended.
-2. Provide authentication: the Google Design MCP requires enabling MCP servers
-   and authentication. Obtain an access token or API key as described in the
-   Google docs: https://developers.google.com/design-mcp
+1. Node.js 18+ recommended (no extra npm deps required).
+2. Authentication: the Google Design MCP requires enabling MCP servers and
+   authentication. Obtain an access token or use the `gcloud` CLI credentials.
+   See: https://developers.google.com/design-mcp
 
-Example (with Bearer token):
+Environment options (the script prefers these in order):
+
+- `GOOGLE_MCP_AUTH`: full `Authorization` header value (e.g. `Bearer <token>`),
+  or just the raw token — the script will prefix `Bearer ` automatically.
+- `GOOGLE_MCP_TOKEN` or `GOOGLE_OAUTH_ACCESS_TOKEN`: raw token value.
+- If none of the above are set, the script will try `gcloud auth print-access-token`.
+
+Examples
+
+Unix / macOS (bash/zsh):
 
 ```bash
 export GOOGLE_MCP_AUTH='Bearer YOUR_ACCESS_TOKEN'
-node fetch-tools.js https://design.googleapis.com/mcp
+node mcp/google-mcp-example/fetch-tools.js https://design.googleapis.com/mcp
 ```
 
-If you omit `GOOGLE_MCP_AUTH`, the script will attempt the request unauthenticated
-and will likely fail with an authentication error.
+Windows PowerShell:
 
-See the Google MCP reference for details on authentication and available tools:
+```powershell
+$env:GOOGLE_MCP_AUTH = 'Bearer YOUR_ACCESS_TOKEN'
+node mcp/google-mcp-example/fetch-tools.js https://design.googleapis.com/mcp
+```
+
+Providing just the raw token is fine — the script will add the `Bearer ` prefix:
+
+```bash
+export GOOGLE_MCP_AUTH='YOUR_ACCESS_TOKEN'
+node mcp/google-mcp-example/fetch-tools.js
+```
+
+gcloud fallback (interactive dev machines):
+
+```bash
+# If you have gcloud installed and are logged-in, the script will use it
+node mcp/google-mcp-example/fetch-tools.js
+```
+
+If authentication is missing or invalid, the endpoint will likely return an
+authentication error. See the Google MCP reference for details:
 https://developers.google.com/design-mcp/reference/mcp
