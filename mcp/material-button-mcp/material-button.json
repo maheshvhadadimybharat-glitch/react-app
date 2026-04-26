@@ -1,0 +1,15 @@
+{
+  "id": "material-button",
+  "name": "MaterialButton",
+  "description": "Material-style Button component with variants, colors, sizes, and ripple effect.",
+  "props": {
+    "label": { "type": "string", "default": "Click me" },
+    "variant": { "type": "string", "enum": ["contained", "outlined", "text"], "default": "contained" },
+    "color": { "type": "string", "enum": ["primary", "secondary", "danger"], "default": "primary" },
+    "size": { "type": "string", "enum": ["sm", "md", "lg"], "default": "md" },
+    "onClick": { "type": "function", "description": "Click handler" },
+    "disabled": { "type": "boolean", "default": false }
+  },
+  "example": "<MaterialButton label=\"Save\" variant=\"contained\" color=\"primary\" />",
+  "source": "/atoms/material-button/code"
+}

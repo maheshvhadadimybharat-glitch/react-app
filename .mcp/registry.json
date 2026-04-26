@@ -7,5 +7,13 @@
       "manifestUrl": "http://localhost:4300/atoms/button",
       "description": "Local MCP for the Button atom. Use the file path for offline discovery or the URL when the server is running."
     }
+    ,
+    {
+      "id": "material-button-mcp",
+      "name": "Material Button MCP (local)",
+      "manifestFile": "mcp/material-button-mcp/material-button.json",
+      "manifestUrl": "http://localhost:4301/atoms/material-button",
+      "description": "Local MCP for the MaterialButton atom. Use the file path for offline discovery or the URL when the server is running."
+    }
   ]
 }
