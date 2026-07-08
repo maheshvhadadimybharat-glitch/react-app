@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import AccordionItem from "./AccordionItem";
 import useAccordion from "./useAccordion";
 

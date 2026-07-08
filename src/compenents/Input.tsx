@@ -40,7 +40,7 @@ const Input = ({
       const cssKey =
         key === "background" ? "backgroundColor" : key;
 
-      acc[cssKey as any] = resolveToken(String(value), theme);
+      acc[cssKey as keyof React.CSSProperties] = resolveToken(String(value), theme);
       return acc;
     },
     {} as React.CSSProperties

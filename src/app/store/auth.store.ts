@@ -3,7 +3,7 @@
 import { create } from "zustand";
 
 type User = {
-  name: String,
+  name: string,
   role: "admin" | "user"
 }
 

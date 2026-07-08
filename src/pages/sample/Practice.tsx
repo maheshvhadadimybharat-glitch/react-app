@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 interface UserProp {
   id: number,
@@ -15,14 +15,10 @@ const Practice = () => {
   ];
 
 
-  const [users, setUsers] = useState<UserProp[]>([]);
+  const [users] = useState<UserProp[]>(initialData);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(()=>{
-    setUsers(initialData);
-  }, []);
-
-  const filteredUsers = users.filter((user: any) => 
+  const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   

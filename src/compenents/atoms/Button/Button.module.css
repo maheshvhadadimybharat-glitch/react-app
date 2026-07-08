@@ -8,6 +8,7 @@
   border: none;
   cursor: pointer;
   font-size: 0.875rem;
+  background-color: transparent;
 }
 
 .button:hover {
@@ -29,12 +30,12 @@
 }
 
 .tonal {
-  background: var(--color-primary100);
+  background: var(--color-primary-100);
   color: var(--color-text-dark);
 }
 
 .tonal:focus {
-  box-shadow: 0 0 0 4px var(--color-primary50);
+  box-shadow: 0 0 0 4px var(--color-primary-50);
 }
 
 .primary-outlined {

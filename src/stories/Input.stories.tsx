@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import Input from "../compenents/Input";
 import { theme } from "../design-system/theme";
 
@@ -62,7 +62,7 @@ export const AllVariants = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
       {Object.keys(inputConfig.variants || {}).map((variant) => (
-        <Input key={variant} placeholder={variant} variant={variant as any} />
+        <Input key={variant} placeholder={variant} variant={variant as string} />
       ))}
     </div>
   ),

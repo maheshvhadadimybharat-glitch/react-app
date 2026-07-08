@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./Branding.module.css";
 import { Image } from "../../atoms/Image";
 
 const Branding = ({

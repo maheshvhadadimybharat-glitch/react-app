@@ -2,6 +2,7 @@ import { sidebarMenu } from "./sidebar.config";
 import SidebarItem from "./SidebarItem";
 import { userAuthStore } from "../../app/store/auth.store";
 import styles from "./Sidebar.module.css";
+import type { ElementType } from "react";
 
 const SidebarGroup = () => {
   const user = userAuthStore((state)=> state.user)
@@ -10,7 +11,7 @@ const SidebarGroup = () => {
   type SidebarItemType = {
     label: string;
     href?: string;
-    icon?: any;
+    icon?: ElementType;
     roles?: string[];
     children?: SidebarItemType[];
   };
@@ -35,7 +36,7 @@ const SidebarGroup = () => {
   
   return (
     <ul className={`${styles.items}`}>
-      {sidebarMenu.map((item, index)=>(
+      {filterMenu(sidebarMenu).map((item, index)=>(
         <SidebarItem key={index} {...item}/>
       ))}
     </ul>

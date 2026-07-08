@@ -1,20 +1,9 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { UserProps } from "../../types/UserType/UserType";
 import { supabase } from '../../lib/supabase';
-import { useAuth } from './AuthContext';
-
-interface UserContextType {
-  users: UserProps[],
-  isLoading: boolean,
-  addUser: (user: UserProps) => void,
-  deleteUser: (id: number) => void,
-  toggleStatus: (id: number) => void,
-  toggleSort: () => void,
-  sortOrder: string,
-  updateUser: (id: number, data: { name: string; lastname: string }) => Promise<void>; // 👈 Add this line
-}
-
-const UserContext = createContext<UserContextType | undefined>(undefined);
+import { useAuth } from './AuthContext.context';
+import { UserContext } from './UserContext.context';
+import toast from 'react-hot-toast';
 
 export const UserProvider = ({children}: { children: React.ReactNode }) => {
   const { user, loading: authLoading } = useAuth();
@@ -95,23 +84,46 @@ export const UserProvider = ({children}: { children: React.ReactNode }) => {
   // const deleteUser = (id: number) => setUsers(users.filter(u => u.id !== id));
 
   const deleteUser = async (id: number) => {
-    // 1. Tell Supabase to remove the row where 'id' matches
+
+    // 1. Keep a backup of the current state in case we need to roll back
+    const previousUsers = [...users];
+
+    // 2. OPTIMISTIC UPDATE: Remove from UI immediately
+    setUsers(users.filter(u => u.id !== id));
+    
+    try {
     const { error } = await supabase
       .from('Users')
       .delete()
-      .eq('id', id); // 'eq' means 'where id equals'
+      .eq('id', id);
 
-      if (error) {
-        console.error("Delete error:", error.message);
-        alert("Could not delete user from database.");
-      } else {
-        // 2. Only if the DB is successful, update the UI
-        setUsers(prev => prev.filter(u => u.id !== id));
-      }
+    if (error) throw error;
+    
+    toast.success("Member removed.");
+    } catch (err: any) {
+      // 3. ROLLBACK: If Supabase fails (e.g. internet drops), put the user back!
+      setUsers(previousUsers);
+      toast.error("Failed to delete. Restoring member...");
+    }
+
+    // // 1. Tell Supabase to remove the row where 'id' matches
+    // const { error } = await supabase
+    //   .from('Users')
+    //   .delete()
+    //   .eq('id', id); // 'eq' means 'where id equals'
+
+    //   if (error) {
+    //     console.error("Delete error:", error.message);
+    //     alert("Could not delete user from database.");
+    //   } else {
+    //     // 2. Only if the DB is successful, update the UI
+    //     setUsers(prev => prev.filter(u => u.id !== id));
+    //   }
 
   }
 
   const addUser = (u: UserProps) => setUsers([u, ...users]);
+  
 
   const updateUser = async (id: number, updatedData: { name: string; lastname: string }) => {
   const { error } = await supabase
@@ -158,11 +170,6 @@ export const UserProvider = ({children}: { children: React.ReactNode }) => {
     </UserContext.Provider>
   );
 
-}  
-
-// 3. A custom hook to make it easy to use
-export const useUsers = () => {
-  const context = useContext(UserContext);
-  if (!context) throw new Error("useUsers must be used within a UserProvider");
-  return context;
 };
+
+// `useUsers` is exported from UserContext.context.ts

@@ -10,30 +10,31 @@ const Radio = ({
   checked = false,
   disabled = false
 }) => {
-  return(
-    <div className={styles.wrapper}>  
-      { labelPosition === "left" && (
-        <label for={id} className={styles.label}>
+  return (
+    <div className={styles.wrapper}>
+      {labelPosition === "left" && (
+        <label htmlFor={id} className={styles.label}>
           {label}
         </label>
       )}
-      
-      <input 
-        type="radio" 
+
+      <input
+        type="radio"
         name={name}
-        className={styles.formcontrol} 
+        className={styles.formcontrol}
         id={id}
-        //checked={checked}
+        defaultChecked={checked}
         disabled={disabled}
-        />
-      
-      { labelPosition === "right" && (
-        <label for={id} className={styles.label}>
+        required={required}
+      />
+
+      {labelPosition === "right" && (
+        <label htmlFor={id} className={styles.label}>
           {label}
         </label>
       )}
     </div>
-  )
+  );
 }
 
 export default Radio;

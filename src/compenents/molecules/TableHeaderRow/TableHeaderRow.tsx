@@ -1,7 +1,6 @@
 import React from "react";
 import { Checkbox } from "../../atoms/Input";
 import TableCell from "../../atoms/TableCell/TableCell";
-import styles from "./TableHeaderRow.module.css";
 
 const TableHeaderRow = ({
   columns,

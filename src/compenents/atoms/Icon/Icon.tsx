@@ -1,8 +1,34 @@
 import React from "react";
-import styles from "./Icon.module.css";
-import type { ICON_REGISTRY } from "./iconRegistry";
+import { ICON_REGISTRY } from "./iconRegistry";
 
-const ICON_SIZES = {
+/* ------------------ TYPES ------------------ */
+
+export type IconName = keyof typeof ICON_REGISTRY;
+
+export type IconSize = "inherit" | "xs" | "sm" | "md" | "lg" | "xl";
+
+export type IconRounded = "none" | "sm" | "md" | "lg" | "full";
+
+export type IconVariant = "filled" | "outlined" | "ghost";
+
+type IconProps = {
+  name: IconName;
+  size?: IconSize | number;
+
+  color?: string;
+  className?: string;
+
+  variant?: IconVariant;
+  backgroundColor?: string;
+  borderColor?: string;
+
+  rounded?: IconRounded;
+  padding?: number;
+};
+
+/* ------------------ CONSTANTS ------------------ */
+
+const ICON_SIZES: Record<Exclude<IconSize, "inherit">, string> = {
   xs: "0.75rem",
   sm: "1rem",
   md: "1.25rem",
@@ -10,7 +36,7 @@ const ICON_SIZES = {
   xl: "2.25rem",
 };
 
-const PADDING_MAP = {
+const PADDING_MAP: Record<Exclude<IconSize, "inherit">, number> = {
   xs: 6,
   sm: 8,
   md: 8,
@@ -18,18 +44,30 @@ const PADDING_MAP = {
   xl: 12,
 };
 
-const Icon = ({
+const ROUNDED_MAP: Record<IconRounded, string> = {
+  none: "0px",
+  sm: "4px",
+  md: "6px",
+  lg: "12px",
+  full: "9999px",
+};
+
+/* ------------------ COMPONENT ------------------ */
+
+const Icon: React.FC<IconProps> = ({
   name,
-  size = "inherit", // default changed
+  size = "inherit",
   color = "currentColor",
   className = "",
-  background = false,
+
+  variant = "ghost",
   backgroundColor,
+  borderColor,
+
   rounded = "full",
   padding,
   ...props
 }) => {
-
   const Component = ICON_REGISTRY[name];
 
   if (!Component) {
@@ -37,39 +75,50 @@ const Icon = ({
     return null;
   }
 
-  // Flexible size handling
+  /* -------- Size -------- */
+
   const iconSize =
     typeof size === "number"
       ? `${size}px`
       : size === "inherit"
       ? "1em"
-      : ICON_SIZES[size] || ICON_SIZES.md;
+      : ICON_SIZES[size];
 
   const computedPadding =
     padding ??
-    (size === "inherit"
-      ? 6
-      : PADDING_MAP[size] || PADDING_MAP.md);
+    (size === "inherit" ? 6 : PADDING_MAP[size] ?? PADDING_MAP.md);
 
-  // Always use wrapper for consistency
-  const wrapperStyle = {
-    fontSize: iconSize, 
-    color: color,
+  const hasContainer = variant !== "ghost";
+
+  /* -------- Variant Styles -------- */
+
+  const variantStyles: React.CSSProperties = {
+    ...(variant === "filled" && {
+      backgroundColor: backgroundColor || "var(--color-neutralColor50)",
+      color: color || "var(--color-text-light)",
+    }),
+
+    ...(variant === "outlined" && {
+      border: `1px solid ${borderColor || color}`,
+      color: color,
+    }),
+  };
+
+  /* -------- Final Style -------- */
+
+  const wrapperStyle: React.CSSProperties = {
+    fontSize: iconSize,
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
+    color,
 
-    ...(background && {
-      backgroundColor:
-        backgroundColor || "var(--color-neutralColor50)",
+    ...(hasContainer && {
       padding: `${computedPadding}px`,
-      borderRadius:
-        rounded === "full"
-          ? "9999px"
-          : rounded === "lg"
-          ? "12px"
-          : "6px",
+      borderRadius: ROUNDED_MAP[rounded],
     }),
+
+    ...variantStyles,
   };
 
   return (

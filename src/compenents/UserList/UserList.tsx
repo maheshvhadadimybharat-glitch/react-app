@@ -6,8 +6,10 @@ import { motion, AnimatePresence } from "framer-motion";
 // Fixed the type definition here to include onDelete
 interface UserListProps {
   items: UserProps[];
-  onDelete: DeleteHandler;
-  onToggleStatus: ToggleStatusHandler; // Add this
+  onDelete: (user: UserProps) => void;
+  onToggleStatus: (id: number) => void;
+  selectedIds: number[];             // Add this
+  toggleSelectUser: (id: number) => void; // Add this
 }
 
 const listStyles = {
@@ -15,7 +17,13 @@ const listStyles = {
   empty: "p-10 text-center text-gray-500 italic bg-gray-50"
 };
 
-const UserList = ({ items, onDelete, onToggleStatus }: UserListProps) => {
+const UserList = ({ 
+  items, 
+  onDelete, 
+  onToggleStatus, 
+  selectedIds, 
+  toggleSelectUser
+}: UserListProps) => {
 
   if (items.length === 0) {
     return <div className={listStyles.empty}>No team members. Please add Members</div>;
@@ -38,6 +46,8 @@ const UserList = ({ items, onDelete, onToggleStatus }: UserListProps) => {
         user={user}
         onRemove={onDelete} // This stays the same
         onToggle={onToggleStatus} // Pass it down
+        selectedIds={selectedIds}       // Pass it down
+        toggleSelectUser={toggleSelectUser} // Pass it down
         />
         </motion.div>
     ))}

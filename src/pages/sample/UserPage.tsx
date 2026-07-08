@@ -5,14 +5,17 @@ import SearchBar from "../../compenents/SearchBar/SearchBar";
 import AddUserForm from "../../compenents/AddUserForm/AddUserForm";
 import StatBar from "../../compenents/StatBar/StatBar";
 import UserSkeleton from "../../compenents/UserSkeleton/UserSkeleton";
-import { useUsers } from "../../compenents/GlobalContext/UserContext";
+import { useUsers } from "../../compenents/GlobalContext/UserContext.context";
 import { supabase } from "../../lib/supabase";
 import DeleteModal from "../../compenents/Modals/DeleteModal";
-import { useAuth } from "../../compenents/GlobalContext/AuthContext";
+import { useAuth } from "../../compenents/GlobalContext/AuthContext.context";
 import { Link } from "react-router-dom";
-import Button from "../../compenents/Button";
 import MaterialButton from "../../compenents/MaterialButton/MaterialButton";
 import toast from 'react-hot-toast';
+import { motion } from "framer-motion";
+import { Button } from "../../compenents/atoms/Button";
+import { MdOutlineFilterAlt } from "react-icons/md";
+import Icon from "../../compenents/atoms/Icon/Icon";
 
 const UserPage = () => {
 
@@ -27,6 +30,10 @@ const UserPage = () => {
 
   const [isModalOpen, setisModalOpen] = useState(false);
   const [userToDelete, setuserToDelete] = useState<UserProps | null>(null);
+
+  const [activeStatuses, setActiveStatuses] = useState<string[]>(['online', 'offline']);
+
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const {toggleSort, sortOrder} = useUsers();
 
@@ -47,8 +54,6 @@ const UserPage = () => {
   };
 
   // Style constants
-  const loadingStyles = "flex flex-col items-center justify-center p-20 space-y-4";
-  const spinner = "animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500";
   const listStyles = {
   // ... your other styles
   emptyContainer: "flex flex-col items-center justify-center p-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200",
@@ -58,7 +63,6 @@ const UserPage = () => {
 };
 
   // States
-  const [err, setError] = useState("");
  
 
   // User count
@@ -68,12 +72,18 @@ const UserPage = () => {
 
   const AddUser = async (newUser: UserProps) => {
 
-    if(newUser.name.trim() === "" || newUser.lastname.trim() === "") {
-      toast.error("Please provide both a name and lastname.");
+    // if(newUser.name.trim() === "" || newUser.lastname.trim() === "") {
+    //   toast.error("Please provide both a name and lastname.");
+    //   return;
+    // }
+
+    // 1. Validation Logic
+    if (!newUser.name.trim() || !newUser.lastname.trim()) {
+      toast.error("Name fields cannot be empty");
       return;
     }
 
-    const loadingToast = toast.loading("Adding user...");   
+    const loadingToast = toast.loading("Creating member...");   
 
     try {
 
@@ -87,14 +97,15 @@ const UserPage = () => {
             status: 'online'
           }
         ])
-        .select(); // This returns the user WITH the new ID from the DB
+        .select() // This returns the user WITH the new ID from the DB
+        .single();
 
         if (error) throw error;
 
         if (data) {
           // Update our Global Brain with the real DB entry
-          addUser(data[0]);
-          toast.success("User added successfully!", { id: loadingToast });
+          addUser(data); // This sends the object with the real DB id to your Context
+          toast.success(`${data.name} joined the team!`, { id: loadingToast });
         }
         
       // const response = await fetch("https://jsonplaceholder.typicode.com/users", {
@@ -117,23 +128,66 @@ const UserPage = () => {
       // addUser({ ...newUser, id: savedUserFromServer.id });
       // }
       
-    } catch(err: any) {
-      //alert("Database error: Could not save user.");
-      // This will show you if it's a "Policy Violation" or a "Table Not Found" error
-      // 2. Catching RLS errors specifically
-    if (err.code === '42501') { // Supabase RLS error code
-      toast.error("Permission denied. Are you logged in?", { id: loadingToast });
-    } else {
-      toast.error(`Error: ${err.message}`, { id: loadingToast });
-    }
-    } finally {
-
+    } catch (err: any) {
+      
+      console.error("Add Error:", err);
+      toast.error(err.message || "Failed to add user", { id: loadingToast });
+      
+      // const e = err as { code?: string; message?: string };
+      // if (e.code === '42501') {
+      //   toast.error("Permission denied. Are you logged in?", { id: loadingToast });
+      // } else if (e.message) {
+      //   toast.error(`Error: ${e.message}`, { id: loadingToast });
+      // } else {
+      //   toast.error('An unexpected error occurred', { id: loadingToast });
+      // }
     }
   }
 
-  const fetchUsersData = users.filter((user: any) => 
-    user.name.toLowerCase().includes(searchTerm.toLocaleLowerCase())
-  )
+  // const fetchUsersData = users.filter((user: UserProps) => 
+  //   user.name.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+  // )
+
+  const fetchUsersData = users.filter((u) => {
+    const matchesSearch = `${u.name} ${u.lastname}`.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = activeStatuses.includes(u.status);
+    
+    return matchesSearch && matchesStatus;
+  });
+
+  const toggleSelectUser = (id: number) => {
+    setSelectedIds(prev => 
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  // A helper to clear selection after an action
+  const clearSelection = () => setSelectedIds([]);
+
+
+  const handleBulkDelete = async () => {
+  if (selectedIds.length === 0) return;
+  
+  const loadingToast = toast.loading(`Deleting ${selectedIds.length} members...`);
+
+  try {
+    const { error } = await supabase
+      .from('Users')
+      .delete()
+      .in('id', selectedIds); // 👈 This is the magic "Bulk" line
+
+    if (error) throw error;
+
+    // Update Global Context (you'll need to add a bulk delete function to your context or call delete multiple times)
+    // For now, we can just refresh or filter them out locally:
+    selectedIds.forEach(id => deleteUser(id)); 
+    
+    toast.success("Batch delete successful!", { id: loadingToast });
+    clearSelection();
+  } catch (err: any) {
+    toast.error("Bulk delete failed", { id: loadingToast });
+  }
+};
 
    if(isLoading) {
     return (
@@ -145,27 +199,96 @@ const UserPage = () => {
     )
   }
 
+  // Helper logic to check state
+const isAllSelected = activeStatuses.length === 2; // online + offline
+
+  const toggleStatusFilter = (status: string) => {
+    setActiveStatuses(prev => 
+      prev.includes(status) 
+        ? prev.filter(s => s !== status) // Remove if checked
+        : [...prev, status]             // Add if unchecked
+    );
+  };
+
+  const toggleAll = () => {
+  if (isAllSelected) {
+    setActiveStatuses([]); // Clear filters
+  } else {
+    setActiveStatuses(['online', 'offline']); // Select everything
+  }
+};
+
   return (
     <div className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen">
-        
       <div className="max-w-xl mx-auto">
       {user && (
         <MaterialButton label="Logout" variant="contained" color="primary" onClick={signOut} />
       )}
 
-       {/* <ThemeToggle/> Add the button here! */}
+      {/* <ThemeToggle/> Add the button here! */}
 
        
       
       <AddUserForm onAdd={AddUser} disabled={!user}/>
 
       {!user && (
-      <p className="text-sm text-amber-600 bg-amber-50 p-2 rounded mt-2">
-        Please <Link to="/authpage" className="underline">log in</Link> to add new members.
-      </p>
-    )}
+        <p className="text-sm text-amber-600 bg-amber-50 p-2 rounded mt-2">
+          Please <Link to="/authpage" className="underline">log in</Link> to add new members.
+        </p>
+      )}
+      
+      <Button 
+        label="Hello" 
+        variant="primary"
+        icon={MdOutlineFilterAlt} 
+        iconPosition="right" 
+        />
 
       <StatBar total={TotalUser} online={OnlineUsers} offline={OffileUsers} />
+      
+      {/* Status Filters & Bulk Delete Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4 p-4 mb-6 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div className="flex items-center gap-4">
+          <span className="text-xs font-bold uppercase text-slate-400 tracking-wider">Filter:</span>
+          {/* The "All" Master Checkbox */}
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <input 
+              type="checkbox"
+              checked={isAllSelected}
+              onChange={toggleAll}
+              className="w-4 h-4 accent-purple-600 rounded"
+            />
+            <span className={`text-sm font-medium ${isAllSelected ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
+              All
+            </span>
+          </label>
+          {['online', 'offline'].map(status => (
+            <label key={status} className="flex items-center gap-2 cursor-pointer group">
+              <input 
+                type="checkbox"
+                checked={activeStatuses.includes(status)}
+                onChange={() => toggleStatusFilter(status)}
+                className="w-4 h-4 accent-blue-600 rounded"
+              />
+              <span className={`text-sm font-medium capitalize group-hover:text-blue-500 transition-colors ${activeStatuses.includes(status) ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
+                {status}
+              </span>
+            </label>
+          ))}
+        </div>
+          
+        {/* Bulk Delete Button - Only shows when items are selected */}
+        {selectedIds.length > 0 && (
+          <motion.button
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            onClick={handleBulkDelete}
+            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-bold rounded-lg shadow-sm flex items-center gap-2"
+          >
+            🗑️ Delete Selected ({selectedIds.length})
+          </motion.button>
+        )}
+      </div>
       <SearchBar value={searchTerm} onSearch={setSearchTerm}/>
       
       {searchTerm && fetchUsersData.length === 0 ? (
@@ -197,11 +320,13 @@ const UserPage = () => {
           items={fetchUsersData} 
           onDelete={handleDeleteClick} // 👈 Change this to trigger the modal!
           onToggleStatus={toggleStatus} // Check: Is this line here?
+          selectedIds={selectedIds}          // Add this
+          toggleSelectUser={toggleSelectUser} // Add this
         />
         </div>
       )}
       
-  </div>
+    </div>
 
     <DeleteModal 
       isOpen={isModalOpen}

@@ -1,5 +1,6 @@
 // src/app/router/AppRouter.tsx
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Suspense, lazy } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserPage from "../../pages/sample/UserPage";
 import AuthPage from "../../pages/auth/AuthPage";
 import UserDetails from "../../pages/sample/UserDetails";
@@ -7,13 +8,15 @@ import { UserProvider } from "../../compenents/GlobalContext/UserContext";
 import { ThemeProvider } from "../../compenents/GlobalContext/ThemeContext";
 import AppProvider from "../providers/AppProvider";
 import ProtectedRoute from "./ProtectedRoute";
-import { useAuth } from "../../compenents/GlobalContext/AuthContext"; // Import your hook
+import { useAuth } from "../../compenents/GlobalContext/AuthContext.context"; // Import your hook
 import { Toaster } from "react-hot-toast";
+
+const AIAssistant = lazy(() => import("../../pages/AIAssistant/AIAssistant"));
 
 const AppRouter = () => {
 
-  // 3. You must call the hook inside the component to get the 'user'
-  const { user, loading } = useAuth();
+  // 3. You must call the hook inside the component to get loading state
+  const { loading } = useAuth();
 
 if (loading) {
   return <div className="h-screen flex items-center justify-center font-bold">Checking session...</div>;
@@ -38,6 +41,21 @@ if (loading) {
 
               {/* 2. Public Route */}
               <Route path="/authpage" element={<AuthPage/>}/>
+
+              <Route
+                path="/ai-assistant"
+                element={
+                  <Suspense
+                    fallback={
+                      <div className="h-screen flex items-center justify-center font-bold">
+                        Loading AI assistant...
+                      </div>
+                    }
+                  >
+                    <AIAssistant />
+                  </Suspense>
+                }
+              />
 
               {/* 3. Protected Routes: Wrapped in our Bouncer */}
               {/* <Route path="/userpage" element={

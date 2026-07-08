@@ -2,7 +2,16 @@ import React from "react";
 import SidebarItem from "./SidebarItem";
 import styles from "./Sidebar.module.css";
 
-const Sidebar: React.FC<any> = ({ items = [] }) => {
+type SidebarItemShape = {
+  label: string;
+  href?: string;
+  icon?: React.ElementType;
+  collapsible?: boolean;
+  children?: SidebarItemShape[];
+  roles?: string[];
+};
+
+const Sidebar: React.FC<{ items?: SidebarItemShape[] }> = ({ items = [] }) => {
   return (
     <ul className={styles.sidebar}>
       {items.map((item) => (

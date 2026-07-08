@@ -2,10 +2,13 @@ import React from "react";
 import { NavLinkItem } from "../../atoms/NavLinkItem";
 import { Icon } from "../../atoms/Icon";
 
-  const NavigationLinks: React.FC<any> = ({links = []}) => {
+type NavSubLink = { to?: string; label?: string; className?: string };
+type NavLinkType = { to?: string; label?: string; children?: NavSubLink[] };
+
+const NavigationLinks: React.FC<{ links?: NavLinkType[] }> = ({ links = [] }) => {
   return (
     <nav className="NavigationLinks items-center hidden lg:flex">
-      {links.map((link, index)=>{
+      {links.map((link)=>{
         // Normal Link
         if (!Array.isArray(link.children)) {
           return <NavLinkItem key={link.to || link.label} {...link} />;

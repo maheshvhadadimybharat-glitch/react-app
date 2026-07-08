@@ -1,28 +1,34 @@
-export function resolveToken(value: string, theme: any): string {
+export function resolveToken(value: string, theme: Record<string, unknown>): string {
   if (!value) return value;
 
-const rootMap: any = {
-  color: theme.colors,
-  spacing: theme.spacing,
-  radius: theme.radius,
-  typography: theme.typography,
-  components: theme.components,
-  semantic: (theme as any).semantic || {},
-};
+  const t = theme as Record<string, unknown>;
+
+  const rootMap: Record<string, unknown> = {
+    color: t['colors'],
+    spacing: t['spacing'],
+    radius: t['radius'],
+    typography: t['typography'],
+    components: t['components'],
+    semantic: t['semantic'] || {},
+  };
 
   console.log("Resolving:", value);
 
-  return value.replace(/\{(.*?)\}/g, (_, tokenPath) => {
-    const path = tokenPath.split(".");
+  return value.replace(/\{(.*?)\}/g, (_match, tokenPath) => {
+    const path = (tokenPath as string).split('.');
 
-    let result = rootMap[path[0]];
+    let result: unknown = rootMap[path[0]];
 
     for (let i = 1; i < path.length; i++) {
-      result = result?.[path[i]];
+      if (result && typeof result === 'object') {
+        result = (result as Record<string, unknown>)[path[i]];
+      } else {
+        result = undefined;
+        break;
+      }
     }
 
-    return result ?? `{${tokenPath}}`;
+    return (result as string) ?? `{${tokenPath}}`;
   });
 
-  
 }

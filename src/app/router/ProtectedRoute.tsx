@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../../compenents/GlobalContext/AuthContext'; // Path to your AuthContext
+import { useAuth } from '../../compenents/GlobalContext/AuthContext.context'; // Path to your AuthContext
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();

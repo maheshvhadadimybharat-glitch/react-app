@@ -1,20 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import type { ElementType } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./Sidebar.module.css";
 
 type SidebarItemProps = {
   label: string;
   href?: string;
-  icon?: any;
+  icon?: ElementType;
   roles?: string[];
   children?: SidebarItemProps[];
 };
 
 const SidebarItem = ({ href, label, icon: Icon, children }: SidebarItemProps) => {
-  const hasChildren = children && children.length > 0;
-  const [open, setOpen] = useState(false);
-
   const location = useLocation();
+  const hasChildren = children && children.length > 0;
 
   const isActive = href && location.pathname.startsWith(href);
 
@@ -24,12 +23,7 @@ const SidebarItem = ({ href, label, icon: Icon, children }: SidebarItemProps) =>
       location.pathname.startsWith(child.href || "")
     );
 
-  // Auto open when child is active
-  useEffect(() => {
-    if (isChildActive) {
-      setOpen(true);
-    }
-  }, [location.pathname]);
+  const [open, setOpen] = useState<boolean>(() => !!isChildActive);
 
   const handleToggle = () => {
     if (hasChildren) {

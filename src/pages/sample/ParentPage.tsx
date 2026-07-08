@@ -4,7 +4,7 @@ import UserList from "../../compenents/SearchableUser/UserList";
 
 const ParentPage = () => {
   const [query, setQuery] = useState("");
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<{ name: string }[]>([]);
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -13,7 +13,7 @@ const ParentPage = () => {
   }, []);
 
   // Logic lives here in the parent
-  const filteredUsers = users.filter((u: any) => 
+  const filteredUsers = users.filter((u) => 
     u.name.toLowerCase().includes(query.toLowerCase())
   );
 

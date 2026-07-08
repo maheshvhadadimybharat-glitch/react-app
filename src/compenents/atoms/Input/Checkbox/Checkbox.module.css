@@ -25,3 +25,31 @@
 .formcontrol:disabled {
   opacity: .8;
 }
+
+/* Sizes */
+.sm .formcontrol {
+  width: 14px;
+  height: 14px;
+}
+
+.sm .label {
+  font-size: 0.75rem;
+}
+
+.md .formcontrol {
+  width: 16px;
+  height: 16px;
+}
+
+.md .label {
+  font-size: 0.875rem;
+}
+
+.lg .formcontrol {
+  width: 20px;
+  height: 20px;
+}
+
+.lg .label {
+  font-size: 1rem;
+}

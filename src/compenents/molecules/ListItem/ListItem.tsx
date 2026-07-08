@@ -3,10 +3,35 @@ import { Icon } from "../../atoms/Icon";
 import { Text } from "../../atoms/Text";
 import { Link } from "../../atoms/Link";
 
+type IconPosition = "left" | "right" | "top" | "center";
+type IconSize = "xs" | "sm" | "md" | "lg" | "xl";
+
+type ListItemProps = {
+  as?: React.ElementType;
+  children?: React.ReactNode;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  iconName?: string;
+  showIcon?: boolean;
+  iconPosition?: IconPosition;
+  iconBackground?: string | undefined;
+  iconColor?: string;
+  iconSize?: IconSize;
+  href?: string;
+  to?: string;
+  linkVariant?: string;
+  className?: string;
+};
+
 const ALLOWED_ICON_POSITIONS = ["left", "right", "top", "center"];
 const ALLOWED_ICON_SIZES = ["xs", "sm", "md", "lg", "xl"];
 
-const validateVariant: React.FC<any> = (value, allowed, fallback, propName) => {
+const validateVariant = (
+  value: string,
+  allowed: string[],
+  fallback: string,
+  propName: string
+) => {
   if (!allowed.includes(value)) {
     console.warn(
       `Invalid "${propName}" value: "${value}". Allowed values: ${allowed.join(", ")}`
@@ -16,7 +41,7 @@ const validateVariant: React.FC<any> = (value, allowed, fallback, propName) => {
   return value;
 };
 
-const ListItem = ({
+const ListItem: React.FC<ListItemProps> = ({
   as: Component = "li",
   children,
   title,
@@ -71,7 +96,7 @@ const ListItem = ({
       ? "items-center text-center"
       : "items-start text-left";
 
-  const renderIcon: React.FC<any> = () =>
+  const renderIcon = () =>
     showIcon && iconName ? (
       <div className={iconSizeClassMap[safeIconSize]}>
         <Icon
@@ -84,7 +109,7 @@ const ListItem = ({
       </div>
     ) : null;
 
-  const renderTitle: React.FC<any> = () => {
+  const renderTitle = () => {
     if (!title) return null;
 
     if (href || to) {
@@ -114,7 +139,7 @@ const ListItem = ({
     );
   };
 
-  const renderContent: React.FC<any> = () => (
+  const renderContent = () => (
     <div className={`flex flex-col ${contentAlignment}`}>
       {renderTitle()}
       {description && (

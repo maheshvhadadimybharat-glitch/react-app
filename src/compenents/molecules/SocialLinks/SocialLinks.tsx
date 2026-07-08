@@ -1,7 +1,6 @@
 import React from "react";
 import { Text } from "../../atoms/Text"
 import { Icon } from "../../atoms/Icon"
-import { Image } from "../../atoms/Image"
 
 const SocialLinks = ({
   SocialLinksHeading

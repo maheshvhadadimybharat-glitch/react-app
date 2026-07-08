@@ -10,10 +10,10 @@ const MobileMenu = ({
     isAuthenticated = false,
 }) => {
     const [open, setOpen] = useState(false);
-    const [openSubMenu, setOpenSubMenu] = useState(null);
+    const [openSubMenu, setOpenSubMenu] = useState<number | null>(null);
 
-    const toggleSubMenu: React.FC<any> = (index) => {
-        setOpenSubMenu(openSubMenu === index ? null : index);
+    const toggleSubMenu = (index: number) => {
+        setOpenSubMenu((prev) => (prev === index ? null : index));
     };
 
     return (

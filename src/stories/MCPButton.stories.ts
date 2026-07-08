@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import Button from "../compenents/Button"; // your MCP button
 import { theme } from "../design-system/theme";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Text } from "../../atoms/Text";
 
-const SupportSection: React.FC<any> = () => {
+const SupportSection: React.FC = () => {
   return (
     <div className="items-center gap-2 hidden lg:flex">
       <Text variant="">

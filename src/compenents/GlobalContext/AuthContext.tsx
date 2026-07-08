@@ -1,10 +1,8 @@
-import type { AuthContextType } from "../../types/AuthType/AuthType";
-import { useState, useEffect, createContext, useContext } from "react";
+// AuthContextType is defined in types and used by the helper context file
+import { useState, useEffect } from "react";
 import { supabase } from '../../lib/supabase';
 import type { User } from '@supabase/supabase-js';
-
-// 1. Create the Context object
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext } from "./AuthContext.context";
 
 export const AuthProvider = ({children} : {children: React.ReactNode}) => {
   const [user, setUser] = useState<User | null>(null);
@@ -40,13 +38,7 @@ export const AuthProvider = ({children} : {children: React.ReactNode}) => {
 };
 
 // 2. Export the "useAuth" hook so AppRouter can see it
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
+// `useAuth` is exported from AuthContext.context.ts
 
 
 

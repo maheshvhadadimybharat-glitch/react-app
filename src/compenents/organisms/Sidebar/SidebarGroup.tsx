@@ -3,7 +3,16 @@ import { useState } from "react";
 import SidebarItem from "./SidebarItem";
 import styles from "./Sidebar.module.css";
 
-const SidebarGroup: React.FC<any> = ({ links = [] }) => {
+type SidebarLink = {
+  label: string;
+  href?: string;
+  collapsible?: boolean;
+  children?: SidebarLink[];
+  icon?: React.ElementType;
+  roles?: string[];
+};
+
+const SidebarGroup: React.FC<{ links?: SidebarLink[] }> = ({ links = [] }) => {
 
   // Detect parent
   const parent = links.find(link => link.collapsible);

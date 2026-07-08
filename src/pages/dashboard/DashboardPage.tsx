@@ -10,7 +10,7 @@ const DashboardPage = () => {
     <div>
       <Sidebar/>
       <main>
-        {data?.map((user: any) => (
+        {data?.map((user: { id?: number; name?: string }) => (
           <div key={user.id}> {user.name} </div>
         ))}
       </main>

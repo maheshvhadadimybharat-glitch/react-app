@@ -1,39 +1,50 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SlideItem from "../../molecules/SlideItem/SlideItem";
 import styles from "./Slider.module.css";
 import { Icon } from "../../atoms/Icon";
 
-const Slider = ({
-  slides=[],
+type Slide = {
+  image?: string;
+  alt?: string;
+  heading?: React.ReactNode;
+  description?: React.ReactNode;
+  link?: string;
+};
+
+type SliderProps = {
+  slides?: Slide[];
+  autoPlay?: boolean;
+  interval?: number;
+};
+
+const Slider: React.FC<SliderProps> = ({
+  slides = [],
   autoPlay = true,
-  interval = 3000
-}
-) => {
+  interval = 3000,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState();
+  const [isPaused, setIsPaused] = useState<boolean>(false);
 
    // Next slide
-  const nextSlide: React.FC<any> = () => {
-    setCurrentIndex((prev) =>
-      prev === slides.length - 1 ? 0 : prev + 1
-    );
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
 
   // Previous slide
-  const prevSlide: React.FC<any> = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? slides.length - 1 : prev - 1
-    );
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
   // Autoplay
   useEffect(() => {
     if (!autoPlay || isPaused) return;
 
-    const timer = setInterval(nextSlide, interval);
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    }, interval);
+
     return () => clearInterval(timer);
-  }, [currentIndex, autoPlay, isPaused]);
+  }, [autoPlay, isPaused, interval, slides.length]);
 
   if (!slides.length) return null;
   

@@ -7,7 +7,9 @@ import {
   MdKeyboardArrowLeft,
   MdOutlineDashboard,
   MdOutlineManageAccounts,
-  MdOutlineSettings   } from "react-icons/md";
+  MdOutlineSettings,
+  MdOutlinePinDrop,
+  MdOutlinePushPin   } from "react-icons/md";
 
 import { 
   FaUser, 
@@ -30,6 +32,8 @@ export const ICON_REGISTRY = {
   dropdown: MdKeyboardArrowDown,
   arrowRight: MdKeyboardArrowRight,
   arrowLeft: MdKeyboardArrowLeft,
+  geopin: MdOutlinePinDrop,
+  pin: MdOutlinePushPin,
 
   // Fontawesome Icons
   user: FaUser,

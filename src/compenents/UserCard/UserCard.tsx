@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useUsers } from "../GlobalContext/UserContext";
+import { useUsers } from "../GlobalContext/UserContext.context";
 import type { UserProps, DeleteHandler, ToggleStatusHandler } from "../../types/UserType/UserType";
 import { Link } from 'react-router-dom';
 import { motion } from "framer-motion";
-import { useAuth } from "../GlobalContext/AuthContext";
+import { useAuth } from "../GlobalContext/AuthContext.context";
 import { Lock } from 'lucide-react'; // Or any icon library you use
 
 // 1. Define your "Design System" as variables
@@ -22,9 +22,17 @@ interface UserCardProps {
   user: UserProps;
   onRemove: DeleteHandler;
   onToggle: ToggleStatusHandler;
+  selectedIds?: number[]; // Add this line
+  toggleSelectUser?: (id: number) => void; // Add this line
 }
 
-const Usercard = ({ user, onRemove, onToggle }: UserCardProps) => {
+const Usercard = ({ 
+  user, 
+  onRemove, 
+  onToggle, 
+  selectedIds = [], // Default to empty array to prevent .includes error
+  toggleSelectUser 
+}: UserCardProps) => {
 
   const { updateUser } = useUsers(); // Grab the new function
   const [isEditing, setIsEditing] = useState(false);
@@ -42,6 +50,12 @@ const Usercard = ({ user, onRemove, onToggle }: UserCardProps) => {
     className={styles.cardRow}
     key={user.id}>
     <div className="flex items-center space-x-4">
+      <input 
+        type="checkbox"
+        checked={selectedIds.includes(user.id)}
+        onChange={() => toggleSelectUser?.(user.id)} // Added ?. for safety
+        className="w-5 h-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500 mr-2"
+      />
       <div className={styles.avatar}>
         {user.name[0]}{user.lastname[0]}
       </div>

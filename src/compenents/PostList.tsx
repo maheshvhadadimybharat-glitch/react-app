@@ -26,17 +26,18 @@ const fetchData = async () => {
     const data = await response.json();
     setPosts(data);
 
-  } catch(err: any) {
+  } catch(err) {
     // 3. Catch network errors or the thrown error above
-    setError(err.message || "Something went wrong!");
+    const message = err instanceof Error ? err.message : String(err);
+    setError(message || "Something went wrong!");
   } finally {
     setLoading(false);
   }
+};
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-} 
+useEffect(() => {
+  fetchData();
+}, []);
 
 
   // 4. Conditional Rendering for UI States

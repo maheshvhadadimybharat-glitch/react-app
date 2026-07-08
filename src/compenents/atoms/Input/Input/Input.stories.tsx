@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { MdSearch } from "react-icons/md";
 import { fn } from 'storybook/test';
 
 import Input from './Input';
@@ -17,7 +18,7 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['default', 'lg'],
+      options: ['sm', 'md', 'lg'],
     },
     type: {
       control: 'select',
@@ -100,7 +101,7 @@ export const Password: Story = {
     id: 'input-password',
     label: 'Password',
     placeholder: 'Enter password...',
-    type: 'password',
+    type: "password",
   },
 };
 
@@ -128,5 +129,30 @@ export const Search: Story = {
     label: 'Search',
     placeholder: 'Search...',
     type: 'search',
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    id: 'input-icon',
+    label: 'Search',
+    placeholder: 'Search...',
+    icon: MdSearch,
+  },
+};
+
+export const WithLabelIcon: Story = {
+  args: {
+    id: 'input-label-icon',
+    label: 'Email',
+    labelIcon: MdSearch,
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    id: 'input-disabled',
+    label: 'Disabled Input',
+    disabled: true,
   },
 };

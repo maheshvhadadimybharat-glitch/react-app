@@ -9,7 +9,6 @@ import Section from "../../primitives/Section/Section";
 const Footer = ({
   importantLinks,
   usefulLinks,
-  variant
 }) => {
 
   return (

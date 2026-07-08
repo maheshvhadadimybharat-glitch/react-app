@@ -17,12 +17,13 @@ const meta = {
     layout: 'fullscreen',
   },
   tags: ['autodocs'],
+
   argTypes: {
     variant: {
       control: 'select',
       options: ['default', 'compact', 'auth'],
     },
-    withTopabar: {
+    withTopbar: {
       control: 'boolean',
     },
     contained: {
@@ -32,9 +33,11 @@ const meta = {
       control: 'boolean',
     },
   },
+
   args: {
     navLinks: mockNavLinks,
-    onClick: fn(),
+    withTopbar: true,
+    contained: true,
   },
 } satisfies Meta<typeof Header>;
 
@@ -44,7 +47,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     variant: 'default',
-    withTopabar: true,
+    withTopbar: true,
     contained: true,
     isAuthenticated: false,
   },
@@ -53,7 +56,7 @@ export const Default: Story = {
 export const Compact: Story = {
   args: {
     variant: 'compact',
-    withTopabar: true,
+    withTopbar: true,
     contained: true,
     isAuthenticated: false,
   },
@@ -62,7 +65,7 @@ export const Compact: Story = {
 export const Auth: Story = {
   args: {
     variant: 'auth',
-    withTopabar: false,
+    withTopbar: false,
     contained: true,
     isAuthenticated: false,
   },
@@ -71,7 +74,7 @@ export const Auth: Story = {
 export const WithoutTopbar: Story = {
   args: {
     variant: 'default',
-    withTopabar: false,
+    withTopbar: false,
     contained: true,
     isAuthenticated: false,
   },
@@ -80,7 +83,7 @@ export const WithoutTopbar: Story = {
 export const Authenticated: Story = {
   args: {
     variant: 'default',
-    withTopabar: true,
+    withTopbar: true,
     contained: true,
     isAuthenticated: true,
   },
@@ -89,8 +92,9 @@ export const Authenticated: Story = {
 export const NotContained: Story = {
   args: {
     variant: 'default',
-    withTopabar: true,
+    withTopbar: true,
     contained: false,
     isAuthenticated: false,
   },
 };
+

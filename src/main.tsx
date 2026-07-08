@@ -5,6 +5,7 @@ import AppProvider from "./app/providers/AppProvider";
 import AppRouter from "./app/router/AppRouter";
 import { AuthProvider } from "./compenents/GlobalContext/AuthContext";
 import './index.css'
+import "./styles/theme.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <AppProvider>

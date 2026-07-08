@@ -10,12 +10,15 @@ const UserDropdown = ({
 }) => {
 
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   // Close on outside click
   useEffect(() => {
-    const handleClickOutside: React.FC<any> = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setOpen(false);
       }
     };
@@ -24,12 +27,12 @@ const UserDropdown = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const toggleDropdown: React.FC<any> = () => setOpen(prev => !prev);
+  const toggleDropdown = () => setOpen((prev) => !prev);
 
-  const getInitials: React.FC<any> = (name = "") => {
+  const getInitials = (name = ""): string => {
     return name
       .split(" ")
-      .map(word => word[0])
+      .map((word) => word[0])
       .join("")
       .toUpperCase()
       .slice(0, 2);

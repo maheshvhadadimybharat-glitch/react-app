@@ -1,10 +1,24 @@
-import React from "react";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Text } from "../../atoms/Text";
 import { Icon } from "../../atoms/Icon";
 import styles from "./Tabs.module.css";
 
-const Tabs = ({
+type TabItem = {
+  label: string;
+  icon?: string;
+  content?: React.ReactNode;
+  id?: string | number;
+};
+
+type TabsProps = {
+  items?: TabItem[];
+  variant?: "horizontal" | "vertical";
+  defaultActiveIndex?: number;
+  activeIndex?: number;
+  onChange?: (index: number) => void;
+};
+
+const Tabs: React.FC<TabsProps> = ({
   items = [],
   variant = "horizontal",
   defaultActiveIndex = 0,
@@ -12,13 +26,13 @@ const Tabs = ({
   onChange,
 }) => {
   const [internalIndex, setInternalIndex] = useState(defaultActiveIndex);
-  const [indicatorStyle, setIndicatorStyle] = useState({});
-  const tabsRef = useRef([]);
+  const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({});
+  const tabsRef = useRef<Array<HTMLElement | null>>([]);
 
   const isControlled = controlledIndex !== undefined;
   const activeIndex = isControlled ? controlledIndex : internalIndex;
 
-  const handleChange: React.FC<any> = (index) => {
+  const handleChange = (index: number) => {
     if (!isControlled) setInternalIndex(index);
     if (onChange) onChange(index);
   };

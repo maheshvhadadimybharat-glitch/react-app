@@ -21,7 +21,7 @@ const Container = ({
   const classes = [styles.container, className].join(" ");
 
   return (
-    <div className={classes} {...props}>
+    <div className={classes} style={style} {...props}>
       {children}
     </div>
   );
